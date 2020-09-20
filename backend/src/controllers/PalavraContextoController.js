@@ -3,20 +3,17 @@ var cheerio = require('cheerio'); //Retirar informações da página
 const axios = require('axios');
 
 const PalavraContexto = require('../models/PalavraContexto');
+const { findOne } = require('../models/PalavraContexto');
 
-function typeOf(obj) {
-    if (typeof (obj) == "object") {
-        if (obj.length)
-            return "array";
-        else
-            return "object";
-    } else
-        return typeof (obj);
-};
 
 module.exports = {
     async index(req, res) {
         const palavrasContexto = await PalavraContexto.find({});
+        return res.json(palavrasContexto);
+    },
+
+    async findOne(req, res) {
+        const palavrasContexto = await PalavraContexto.findOne(req.params.id);
         return res.json(palavrasContexto);
     },
 
@@ -31,10 +28,10 @@ module.exports = {
         var contextos = $('.c_border li').each(function () {
             var context = $(this).find('.c_primary_hover').children().first().text().trim();
         });
-
-        const contexto = contextos.first().next().next().next().text()
-        const contexto2 = contextos.first().next().text()
-        const contexto3 = contextos.first().next().next().text()
+        
+        const contexto = await contextos.first().next().next().next().text()
+        const contexto2 = await contextos.first().next().text()
+        const contexto3 = await contextos.first().next().next().text()
 
         //SINONIMOS ----------------------------------------------------------------------------------------------------------------------------------------------------
         var sinonimos = $('.contentListData.sinant .c_primary_hover').each(function () {
@@ -42,8 +39,8 @@ module.exports = {
             return sin;
         });
 
-        const sinonimo = sinonimos.prev().last().text()
-        const sinonimo2 = sinonimos.last().text()
+        const sinonimo = await sinonimos.prev().last().text()
+        const sinonimo2 = await sinonimos.last().text()
 
 
 
@@ -71,131 +68,131 @@ module.exports = {
         //SUBTANTIVO-----------------------------------------------------------------------------------------------------------------------------------------------------
         const response_sub_c1 = await axios.get(subs_c1);
         var $ = cheerio.load(response_sub_c1.data);
-        var substantivo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var substantivo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var substantivos = $(this).find('a').text().trim();
             return substantivos;
         });
-        const sub1_c1 = substantivo1.first().text()
-        const sub2_c1 = substantivo1.last().text()
+        
+        const sub1_c1 = await substantivo1.first().next().text();
+        const sub2_c1 = await substantivo1.last().text()
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_sub_c2 = await axios.get(subs_c2);
         var $ = cheerio.load(response_sub_c2.data);
-        var substantivo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var substantivo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li ').each(function () {
             var substantivos = $(this).find('a').text().trim();
             return substantivos;
         });
-        const sub1_c2 = substantivo2.first().text()
-        const sub2_c2 = substantivo2.last().text()
+        const sub1_c2 = await substantivo2.first().next().text();
+        const sub2_c2 = await substantivo2.last().text()
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_sub_c3 = await axios.get(subs_c3);
         var $ = cheerio.load(response_sub_c3.data);
-        var substantivo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var substantivo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var substantivos = $(this).find('a').text().trim();
             return substantivos;
         });
-        const sub1_c3 = substantivo3.prev().last().text()
-        const sub2_c3 = substantivo3.last().text()
+        const sub1_c3 = await substantivo3.first().next().text();
+        const sub2_c3 = await substantivo3.last().text()
 
         //VERBO---------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_verbo_c1 = await axios.get(verbo_c1);
-        var $ = cheerio.load(response_verbo_c1);
-        var verbo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        //console.log(response_verbo_c1)
+        var $ = cheerio.load(response_verbo_c1.data);
+        var verbo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var verbos = $(this).children().first().text().trim();
-            return verbos;
         });
-        const verbo1_c1 = verbo1.first().text();
-        const verbo2_c1 = verbo1.last().text();
+        const verbo1_c1 = await verbo1.first().next().text();
+        const verbo2_c1 = await verbo1.last().text();
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_verbo_c2 = await axios.get(verbo_c2);
-        var $ = cheerio.load(response_verbo_c2);
-        var verbo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_verbo_c2.data);
+        var verbo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var verbos = $(this).children().first().text().trim();
             return verbos;
         });
-        const verbo1_c2 = verbo2.first().text();
-        const verbo2_c2 = verbo2.last().text();
+        const verbo1_c2 = await verbo2.first().next().text();
+        const verbo2_c2 = await verbo2.last().text();
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_verbo_c3 = await axios.get(verbo_c3);
-        var $ = cheerio.load(response_verbo_c3);
-        var verbo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_verbo_c3.data);
+        var verbo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var verbos = $(this).children().first().text().trim();
             return verbos;
         });
-        const verbo1_c3 = verbo3.first().text();
-        const verbo2_c3 = verbo3.last().text();
+        const verbo1_c3 = await verbo3.first().next().text();
+        const verbo2_c3 = await verbo3.last().text();
         
         
         //ADJETIVO------------------------------------------------------------------------------------------------------------------------------------------------------
         
         const response_adjetivo_c1 = await axios.get(adj_c1);
-        var $ = cheerio.load(response_adjetivo_c1);
-        var adjetivo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adjetivo_c1.data);
+        var adjetivo1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adjetivos = $(this).children().first().text().trim();
         });
-        console.log(adjetivo1.text())
-        const adj1_c1 = adjetivo1.first().text();
-        const adj2_c1 = adjetivo1.last().text();
+        const adj1_c1 = await adjetivo1.first().next().text();
+        const adj2_c1 = await adjetivo1.last().text();
         
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_adjetivo_c2 = await axios.get(adj_c2);
-        var $ = cheerio.load(response_adjetivo_c2);
-        var adjetivo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adjetivo_c2.data);
+        var adjetivo2 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adjetivos = $(this).children().first().text().trim();
         });
-        const adj1_c2 = adjetivo2.first().text();
-        const adj2_c2 = adjetivo2.last().text();
+        const adj1_c2 = await adjetivo2.first().next().text();
+        const adj2_c2 = await adjetivo2.last().text();
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------
         
         const response_adjetivo_c3 = await axios.get(adj_c3);
-        var $ = cheerio.load(response_adjetivo_c3);
-        var adjetivo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adjetivo_c3.data);
+        var adjetivo3 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adjetivos = $(this).children().first().text().trim();
         });
-        const adj1_c3 = adjetivo3.first().text();
-        const adj2_c3 = adjetivo3.last().text();
+        const adj1_c3 = await adjetivo3.first().next().text();
+        const adj2_c3 = await adjetivo3.last().text();
 
   
         //ADVERBIO-----------------------------------------------------------------------------------------------------------------------------------------------------
         
         const response_adverbio_c1 = await axios.get(adv_c1);
-        var $ = cheerio.load(response_adverbio_c1);
-        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adverbio_c1.data);
+        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adverbios = $(this).children().first().text().trim();
         });
-        const adv1_c1 = adverbio1.first().text();
-        const adv2_c1 = adverbio1.last().text();
+        const adv1_c1 = await adverbio1.first().next().text();
+        const adv2_c1 = await adverbio1.last().text();
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         const response_adverbio_c2 = await axios.get(adv_c2);
-        var $ = cheerio.load(response_adverbio_c2);
-        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adverbio_c2.data);
+        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adverbios = $(this).children().first().text().trim();
         });
-        const adv1_c2 = adverbio1.first().text();
-        const adv2_c2 = adverbio1.last().text();
+        const adv1_c2 = await adverbio1.first().next().text();
+        const adv2_c2 = await adverbio1.last().text();
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------
         
         const response_adverbio_c3 = await axios.get(adv_c3);
-        var $ = cheerio.load(response_adverbio_c3);
-        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
+        var $ = cheerio.load(response_adverbio_c3.data);
+        var adverbio1 = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent li').each(function () {
             var adverbios = $(this).children().first().text().trim();
         });
 
-        const adv1_c3 = adverbio1.first().text();
-        const adv2_c3 = adverbio1.last().text();
+        const adv1_c3 = await adverbio1.first().next().text();
+        const adv2_c3 = await adverbio1.last().text();
         
         
         const search = await PalavraContexto.create({
@@ -231,62 +228,15 @@ module.exports = {
             adv2_c3  
         });
 
+        req.io.emit('search', search);
         return res.json(search);
     },
+
+
+    //DELETE
     async delete(req, res) {
         await PalavraContexto.findOneAndDelete(req.params.id);
         return res.send();
     }
 }
 
-/*  request(adj_c2, function (error, response, body) {
-            if (error) console.log('Erro: ' + error);
-            var $ = cheerio.load(body);
-            var adjetivo = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
-                var adjetivos = $(this).children().first().text().trim();
-            });
-
-            const adj1_c2 = adjetivo.first().text();
-            const adj2_c2 = adjetivo.last().text();
-        });
-
-        request(adj_c3, function (error, response, body) {
-            if (error) console.log('Erro: ' + error);
-            var $ = cheerio.load(body);
-            var adjetivo = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
-                var adjetivos = $(this).children().first().text().trim();
-            });
-
-            const adj1_c3 = adjetivo.first().text();
-            const adj2_c3 = adjetivo.last().text();
-
-
-            request(adv_c1, function (error, response, body) {
-            if (error) console.log('Erro: ' + error);
-            var $ = cheerio.load(body);
-           
-        });
-
-        request(adv_c2, function (error, response, body) {
-            if (error) console.log('Erro: ' + error);
-            var $ = cheerio.load(body);
-            var adverbio = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
-                var adverbios = $(this).children().first().text().trim();
-            });
-            const adv1_c2 = adverbio.first().text();
-            const adv2_c2 = adverbio.last().text();
-        });
-
-        request(adv_c3, function (error, response, body) {
-            if (error) console.log('Erro: ' + error);
-            var $ = cheerio.load(body);
-            var adverbio = $('.blockList.grid-33.tablet-grid-33.mobile-grid-100.grid-parent a').each(function () {
-                var adverbios = $(this).children().first().text().trim();
-            });
-            const adv1_c3 = adverbio.first().text();
-            const adv2_c3 = adverbio.last().text();
-        });
-
-
-
-        });*/

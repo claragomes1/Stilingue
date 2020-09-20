@@ -1,8 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var cors = require('cors');
-var fs = require('fs'); //Offline??
-
 
 var app = express();
 
