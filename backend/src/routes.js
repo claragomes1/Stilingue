@@ -8,6 +8,7 @@ const PalavraContextoController = require('./controllers/PalavraContextoControll
 routes.get("/", PalavraContextoController.index );
 routes.post("/", PalavraContextoController.store );
 routes.delete("/:_id", PalavraContextoController.delete );
+routes.delete("/", PalavraContextoController.deleteAll );
 
 routes.get("/:_id", PalavraContextoController.findOne);
 

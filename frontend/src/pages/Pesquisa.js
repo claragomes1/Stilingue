@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import api from '../services/api';
 import Mapa from '../components/Mapa';
 import socket from 'socket.io-client';
@@ -8,7 +8,7 @@ export default class Pesquisa extends Component {
 
     state = {
         info_palavras: [],
-        palavra: ""
+        palavra: "",
     };
 
     async componentDidMount() {//Executado automaticamente quando a pagina é exibida em tela
@@ -38,6 +38,7 @@ export default class Pesquisa extends Component {
         this.setState({ info_palavras: response1.data });
         this.setState({ palavra: "" });
         console.log(response.data)
+        
     }
 
 
@@ -101,7 +102,7 @@ export default class Pesquisa extends Component {
                             </form>
                         </div>
                     </nav>
-                    <p>Loading content ...</p>
+                    
                 </div>
             );
 
