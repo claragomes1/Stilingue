@@ -4,6 +4,7 @@ import Mapa from '../components/Mapa';
 import socket from 'socket.io-client';
 import './Pesquisa.css';
 
+
 export default class Pesquisa extends Component {
 
     state = {
@@ -37,8 +38,7 @@ export default class Pesquisa extends Component {
         const response1 = await api.get(`/${response.data._id}`);
         this.setState({ info_palavras: response1.data });
         this.setState({ palavra: "" });
-        console.log(response.data)
-        
+
     }
 
 
@@ -51,10 +51,10 @@ export default class Pesquisa extends Component {
     //render();
 
     render() {
-       //const { info_palavras } = this.state;
+        //const { info_palavras } = this.state;
         if (this.state.info_palavras.length !== 0) {
             return (
-                
+
                 <div className="tela">
                     <nav className="border">
                         <div className="nav-wrapper">
@@ -70,18 +70,19 @@ export default class Pesquisa extends Component {
                                         placeholder="Digite uma palavra"
                                     />
                                     <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                                    <i className="material-icons">close</i>
+                              
                                 </div>
                             </form>
                         </div>
                     </nav>
-                    
+
                     <Mapa key={this.state.info_palavras._id} info_palavras={this.state.info_palavras} />
 
                 </div>
             );
-        } else {
+        }   else{
             return (
+
                 <div className="tela">
                     <nav className="border">
                         <div className="nav-wrapper">
@@ -97,15 +98,15 @@ export default class Pesquisa extends Component {
                                         placeholder="Digite uma palavra"
                                     />
                                     <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                                    <i className="material-icons">close</i>
+                                  
                                 </div>
                             </form>
                         </div>
                     </nav>
-                    
+
                 </div>
             );
-
         }
     }
 }
+
